@@ -1,0 +1,69 @@
+@model IEnumerable<ApplicationUser>
+
+@{
+    ViewBag.Title = "All Users";
+}
+
+<h1>All Users</h1>
+
+@if (Model.Any())
+{
+    <a class="btn btn-primary mb-3" style="width:auto" asp-controller="account" asp-action="register"
+       >Add new User
+    </a>
+    foreach (var user in Model)
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                user Id : @user.Id
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">
+                    @user.Email
+                </h4>
+            </div>
+            <div class="card-footer text-muted">
+                <form asp-action="DeleteUser" asp-route-id="@user.Id" method="POST">
+                    <a asp-controller="Administration" asp-action="EditUser" asp-route-id="@user.Id" class="btn btn-primary" >
+                        Edit
+                    </a>
+                    <span id="confirmDeleteSpan_@user.Id" style="display: none;"> 
+                        <span>Are you sure you want to delete ?</span>
+                        <button type="submit" class="btn btn-danger">
+                            Yes
+                        </button>
+                        <a href="#/" class="btn btn-primary" onclick="ConfirmDelete('@user.Id',false)">
+                            No
+                        </a>
+                    </span>
+                    <span id="deleteSpan_@user.Id">
+                        <a href="#/" class="btn btn-danger" onclick="ConfirmDelete('@user.Id',true)">
+                            Delete
+                        </a>
+                    </span>
+                </form>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            No users created yet
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">
+                Use the button below to create a user
+            </h5>
+            <a class="btn btn-primary" style="width:auto" asp-controller="account" asp-action="register">
+                Create user
+            </a>
+        </div>
+    </div>
+}
+
+@section Scripts
+{
+    <script src="~/js/CustomScript.js"></script>
+}
